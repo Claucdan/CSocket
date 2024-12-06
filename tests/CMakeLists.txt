@@ -1,0 +1,6 @@
+if(BUILD_TESTING)
+    if(WIN32)
+        add_subdirectory(testOfWindowsClient)
+        add_subdirectory(testOfWindowsServer)
+    endif ()
+endif ()
