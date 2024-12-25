@@ -12,6 +12,7 @@ TEST(TestsOfWindowsServerSocket, Creation){
 TEST(TestsOfServerWindowsSocket, Configure){
     IServerSocket* serverSocket = new WindowsServerSocket();
     EXPECT_NO_THROW(serverSocket->Configuration(IPPROTO_TCP));
+    serverSocket->Close();
 }
 
 TEST(TestsOfServerWindowsSocket, Bind){
@@ -20,6 +21,7 @@ TEST(TestsOfServerWindowsSocket, Bind){
     serverSocket->Configuration(IPPROTO_TCP);
 
     EXPECT_EQ(serverSocket->Bind(35098,localhost), 0);
+    serverSocket->Close();
 }
 
 TEST(TestsOfServerWindowsSocket, Listen){
@@ -29,6 +31,7 @@ TEST(TestsOfServerWindowsSocket, Listen){
     serverSocket->Bind(12498, localhost);
 
     EXPECT_EQ(serverSocket->Listen(1), 0);
+    serverSocket->Close();
 }
 
 TEST(TestsOfServerWindowsSocket, Accept){
@@ -43,6 +46,8 @@ TEST(TestsOfServerWindowsSocket, Accept){
 
 
     EXPECT_NO_THROW(serverSocket->Accept());
+    clientSocket->Close();
+    serverSocket->Close();
 }
 
 TEST(TestOfServerWindowsSocket, Recive){
@@ -60,6 +65,8 @@ TEST(TestOfServerWindowsSocket, Recive){
     clientSocket->Send(&data, sizeof(char));
 
     EXPECT_NO_THROW(acceptSocket->Receive(&reciveData, sizeof(char)));
+    clientSocket->Close();
+    serverSocket->Close();
 }
 
 TEST(TestOfServerWindowsSocket, ReciveAndCheckData){
@@ -78,6 +85,8 @@ TEST(TestOfServerWindowsSocket, ReciveAndCheckData){
     acceptSocket->Receive(&reciveData, sizeof(char));
 
     EXPECT_EQ(data, reciveData);
+    clientSocket->Close();
+    serverSocket->Close();
 }
 
 int main(int argc, char* argv[]){

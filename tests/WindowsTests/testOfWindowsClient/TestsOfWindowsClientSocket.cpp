@@ -7,11 +7,13 @@
 TEST(TestsOfWindowsClienSocket, Creation){
     IClientSocket* clientSocket;
     EXPECT_NO_THROW(clientSocket = new WindowsClientSocket());
+    clientSocket->Close();
 }
 
 TEST(TestsOfWindowsClienSocket, Configure){
     IClientSocket* clientSocket = new WindowsClientSocket();
     EXPECT_NO_THROW(clientSocket->Configuration(IPPROTO_TCP));
+    clientSocket->Close();
 }
 
 TEST(TestsOfWindowsClienSocket, Connect){
@@ -24,6 +26,8 @@ TEST(TestsOfWindowsClienSocket, Connect){
     clientSocket->Configuration(IPPROTO_TCP);
 
     EXPECT_EQ(clientSocket->Connect(489, localhost), 0);
+    clientSocket->Close();
+    serverSocket->Close();
 }
 TEST(TestsOfWindowsClienSocket, Send){
     IClientSocket* clientSocket = new WindowsClientSocket();
@@ -38,7 +42,8 @@ TEST(TestsOfWindowsClienSocket, Send){
     clientSocket->Connect(489, localhost);
     clientSocket->Send(&data, sizeof(data));
     EXPECT_NO_THROW(serverSocket->Accept()->Receive(&fakeData, sizeof(char)));
-
+    clientSocket->Close();
+    serverSocket->Close();
 }
 
 TEST(TestsOfWindowsClienSocket, SendAndCheckData){
@@ -56,4 +61,6 @@ TEST(TestsOfWindowsClienSocket, SendAndCheckData){
     serverSocket->Accept()->Receive(&fakeData, sizeof(char));
 
     EXPECT_EQ(data, fakeData);
+    clientSocket->Close();
+    serverSocket->Close();
 }
