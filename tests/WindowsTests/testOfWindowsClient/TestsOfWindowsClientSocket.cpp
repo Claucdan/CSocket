@@ -2,7 +2,7 @@
 #include "WinsockImp/WindowsClientSocket.h"
 #include "WindowsImp/WindowsServerSocket.h"
 
-#define localhost "192.168.0.51"
+#define localhost "192.168.0.200"
 
 TEST(TestsOfWindowsClienSocket, Creation){
     IClientSocket* clientSocket;

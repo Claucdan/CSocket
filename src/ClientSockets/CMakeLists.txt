@@ -21,7 +21,6 @@ if(UNIX)
             LinuxImp/LinuxClientSocket.h
             LinuxImp/LinuxClientSocket.cpp
     )
-    target_link_libraries(ClientSocket wsock32 ws2_32)
     target_include_directories(
             ClientSocket PUBLIC
             "${CMAKE_CURRENT_SOURCE_DIR}"
