@@ -13,3 +13,17 @@ if(WIN32)
             "${CMAKE_CURRENT_SOURCE_DIR}/WinsockImp"
     )
 endif()
+if(UNIX)
+    add_library(
+            ClientSocket STATIC
+            IClientSocket.h
+            ../SocketDefinitionTypes.h
+            LinuxImp/LinuxClientSocket.h
+            LinuxImp/LinuxClientSocket.cpp
+    )
+    target_include_directories(
+            ClientSocket PUBLIC
+            "${CMAKE_CURRENT_SOURCE_DIR}"
+            "${CMAKE_CURRENT_SOURCE_DIR}/LinuxImp"
+    )
+endif()
