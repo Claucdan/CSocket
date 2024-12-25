@@ -2,28 +2,20 @@ name: Testing Windows Socket
 run-name: ${{ github.actor }} push in github some new
 on: [push]
 jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
+build:
+  runs-on: windows-latest
 
-      - name: Configure Test
-        run: |
-          cd   ${{github.workspace}}/Actions
-          cmake -S . -B ${{github.workspace}}/Actions
-      - name: Configure project
-        run: cmake -S .
+  steps:
+    - uses: actions/checkout@v3
 
-      - name: Build Test
-        # Build your program with the given configuration
-        run:  cmake --build ${{github.workspace}}/Actions -j 12
-      - name: Build
-        run: cmake --build .
+    - name: Configure project
+      run: cmake -S .
 
-      - name: Testing
-        run: |
-          ctest --test-dir ${{github.workspace}}/Actions --output-on-failure -j12
-          ctest --output-on-failure --extra-verbose
+    - name: Build
+      run: cmake --build .
 
-      - name: Result
-        run: echo All work!!!
+    - name: Testing
+      run:  ctest --output-on-failure --extra-verbose
+
+    - name: Result
+      run: echo All work!!!
