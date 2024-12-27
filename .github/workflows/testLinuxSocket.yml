@@ -1,0 +1,21 @@
+name: Testing Windows Socket
+run-name: ${{ github.actor }} push in github some new
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure project
+        run: cmake -S .
+
+      - name: Build
+        run: cmake --build .
+
+      - name: Testing
+        run:  ctest --output-on-failure --extra-verbose
+
+      - name: Result
+        run: echo All work!!!
