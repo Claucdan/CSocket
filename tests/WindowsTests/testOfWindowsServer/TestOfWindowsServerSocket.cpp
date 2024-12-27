@@ -2,7 +2,7 @@
 #include "WindowsImp/WindowsServerSocket.h"
 #include "WinsockImp/WindowsClientSocket.h"
 
-#define localhost "192.168.0.200"
+char* localhost;
 
 TEST(TestsOfWindowsServerSocket, Creation){
     IServerSocket* serverSocket;
@@ -89,7 +89,28 @@ TEST(TestOfServerWindowsSocket, ReciveAndCheckData){
     serverSocket->Close();
 }
 
+
+
+
+
 int main(int argc, char* argv[]){
+    WSADATA wsaData;
+    if (!WSAStartup(WINSOCK_VERSION, &wsaData))
+    {
+        char chInfo[64];
+        if (!gethostname(chInfo, sizeof(chInfo)))
+        {
+            struct hostent *sh;
+            sh=gethostbyname((char*)&chInfo);
+            if (sh!=NULL)
+            {
+                struct sockaddr_in adr;
+                memcpy(&adr.sin_addr, sh->h_addr_list[0], sh->h_length);
+                localhost = inet_ntoa(adr.sin_addr);
+            }
+        }
+    }
+    WSACleanup();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
