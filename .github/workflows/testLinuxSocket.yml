@@ -1,8 +1,12 @@
-name: Testing Windows Socket
+name: build & tests
 run-name: ${{ github.actor }} push in github some new
-on: [push]
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 jobs:
-  build:
+  Windows:
     runs-on: windows-latest
 
     steps:
