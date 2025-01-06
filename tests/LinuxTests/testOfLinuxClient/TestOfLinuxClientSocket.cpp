@@ -79,7 +79,6 @@ TEST(TestsOfLinuxClientSocket, SendAndCheckData){
     serverSocket->Close();
 }
 
-
 int main(int argc, char* argv[]){
     findLocalHost();
     ::testing::InitGoogleTest(&argc, argv);
