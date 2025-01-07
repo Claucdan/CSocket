@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 #include <LinuxImp/LinuxClientSocket.h>
 #include <LinuxImp/LinuxServerSocket.h>
+#include <FindLocalIp.h>
 
-#define localhost "192.168.0.86"
+char* localhost;
 
 
 TEST(TestsOfLinuxServerSocket, Creation){
@@ -69,4 +70,10 @@ TEST(TestOfServerLinuxSocket, Recive){
     EXPECT_NO_THROW(acceptSocket->Receive(&reciveData, sizeof(char)));
     clientSocket->Close();
     serverSocket->Close();
+}
+
+int main(int argc, char* argv[]){
+    localhost = findLocalIp();
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
