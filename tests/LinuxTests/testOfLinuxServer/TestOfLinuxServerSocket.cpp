@@ -1,20 +1,9 @@
 #include <gtest/gtest.h>
-#include <ifaddrs.h>
 #include <LinuxImp/LinuxClientSocket.h>
 #include <LinuxImp/LinuxServerSocket.h>
+#include <FindLocalIp.h>
 
-char localhost[INET_ADDRSTRLEN];
-
-void findLocalHost(){
-    struct ifaddrs* ifaddrs = nullptr;
-    struct ifaddrs* ifa = nullptr;
-    void* tmp = nullptr;
-
-    getifaddrs(&ifaddrs);
-    tmp = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
-    inet_ntop(AF_INET, tmp, localhost, INET_ADDRSTRLEN);
-    if (ifaddrs!=NULL) freeifaddrs(ifaddrs);
-}
+char* localhost;
 
 
 TEST(TestsOfLinuxServerSocket, Creation){
@@ -84,7 +73,7 @@ TEST(TestOfServerLinuxSocket, Recive){
 }
 
 int main(int argc, char* argv[]){
-    findLocalHost();
+    localhost = findLocalIp();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

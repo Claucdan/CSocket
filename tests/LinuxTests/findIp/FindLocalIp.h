@@ -1,0 +1,6 @@
+#ifndef CSOCKET_FINDLOCALIP_H
+#define CSOCKET_FINDLOCALIP_H
+
+char* findLocalIp();
+
+#endif //CSOCKET_FINDLOCALIP_H

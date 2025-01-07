@@ -8,6 +8,7 @@ target_link_libraries(
         GTest::GTest
         ClientSocket
         ServerSocket
+        FindLocalIp
 )
 
 include(GoogleTest)

@@ -1,2 +1,3 @@
+add_subdirectory(findIp)
 add_subdirectory(testOfLinuxClient)
 add_subdirectory(testOfLinuxServer)
