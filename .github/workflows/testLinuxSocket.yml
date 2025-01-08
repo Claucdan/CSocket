@@ -1,5 +1,5 @@
 name: build & tests
-run-name: ${{ github.actor }} push in github some new
+run-name: ${{ github.actor }} want to merge into master
 on:
   push:
     branches: ["master"]
