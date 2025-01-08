@@ -16,7 +16,10 @@ int WindowsServerSocket::Configuration(int protocol) {
 
 int WindowsServerSocket::Bind(const int port, const char *address) {
     _addrIn.sin_family = AF_INET;
-    _addrIn.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (!address[0])
+        _addrIn.sin_addr.s_addr = htonl(INADDR_ANY);
+    else
+        _addrIn.sin_addr.s_addr = inet_addr(address);
     _addrIn.sin_port = htons(port);
 
     if (::bind(_socket, (sockaddr*)&_addrIn, sizeof(_addrIn)) == SOCKET_ERROR)

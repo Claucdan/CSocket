@@ -12,7 +12,10 @@ int LinuxServerSocket::Configuration(int protocol) {
 
 int LinuxServerSocket::Bind(const int port, const char *address) {
     _sockAddr.sin_family = AF_INET;
-    _sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (!address[0])
+        _sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    else
+        _sockAddr.sin_addr.s_addr = inet_addr(address);
     _sockAddr.sin_port = htons(port);
 
     if (bind(_socket, (sockaddr*)&_sockAddr, sizeof(_sockAddr)) == SOCKET_ERROR)
