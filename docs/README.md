@@ -30,3 +30,16 @@ cd ./CSocket/
 cmake -S . ./cmake-build
 cmake --build .
 ```
+
+## Using in CMake
+***
+You can use that library like fetch content in CMake.
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    CSocket
+    GIT_REPOSITORY https://github.com/Claucdan/CSocket.git
+    GIT_TAG        v1.0.0
+)
+FetchContent_MakeAvailable(CSocket)
+```
