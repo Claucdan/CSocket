@@ -39,7 +39,7 @@ include(FetchContent)
 FetchContent_Declare(
     CSocket
     GIT_REPOSITORY https://github.com/Claucdan/CSocket.git
-    GIT_TAG        v1.0.0
+    GIT_TAG        v1.1.27
 )
 FetchContent_MakeAvailable(CSocket)
 ```
