@@ -1,7 +1,7 @@
 #ifndef CSOCKET_LINUXSERVERSOCKET_H
 #define CSOCKET_LINUXSERVERSOCKET_H
 
-#include <IServerSocket.h>
+#include "../IServerSocket.h"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
