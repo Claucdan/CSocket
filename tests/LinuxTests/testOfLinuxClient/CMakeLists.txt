@@ -6,8 +6,7 @@ add_executable(
 target_link_libraries(
         TestsOfLinuxClient PRIVATE
         GTest::GTest
-        ClientSocket
-        ServerSocket
+        CSocket
         FindLocalIp
 )
 

@@ -2,7 +2,7 @@
 #define CSOCKET_ISERVERSOCKET_H
 
 #include "../SocketDefinitionTypes.h"
-#include <IClientSocket.h>
+#include "../ClientSockets/IClientSocket.h"
 
 class IServerSocket{
 public:
