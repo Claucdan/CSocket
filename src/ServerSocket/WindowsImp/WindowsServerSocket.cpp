@@ -1,5 +1,5 @@
 #include "WindowsServerSocket.h"
-#include <ClientSocket.h>
+#include "../../ClientSockets/WinsockImp/WindowsClientSocket.h"
 
 int WindowsServerSocket::Configuration(int protocol) {
     WSAData wsaData;

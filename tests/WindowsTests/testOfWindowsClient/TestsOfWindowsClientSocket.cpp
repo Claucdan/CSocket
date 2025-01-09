@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include <ClientSocket.h>
-#include <ServerSocket.h>
+#include <CSocket.h>
 
 char* localhost;
 

@@ -1,8 +1,8 @@
 #ifndef CSOCKET_WINDOWSSERVERSOCKET_H
 #define CSOCKET_WINDOWSSERVERSOCKET_H
 
-#include "IServerSocket.h"
-#include "winsock2.h"
+#include "../IServerSocket.h"
+#include <winsock2.h>
 
 class WindowsServerSocket : public IServerSocket{
 private:

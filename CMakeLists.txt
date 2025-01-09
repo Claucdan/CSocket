@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(CSocket VERSION 1.0.4
+project(CSocket VERSION 1.1.27
                 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)

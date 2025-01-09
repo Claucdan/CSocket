@@ -1,5 +1,5 @@
 #include "LinuxServerSocket.h"
-#include <ClientSocket.h>
+#include "../../ClientSockets/LinuxImp/LinuxClientSocket.h"
 
 int LinuxServerSocket::Configuration(int protocol) {
     _socket = socket(AF_INET, SOCK_STREAM, protocol);
