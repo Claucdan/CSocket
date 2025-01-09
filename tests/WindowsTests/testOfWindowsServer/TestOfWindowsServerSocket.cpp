@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "WindowsImp/WindowsServerSocket.h"
-#include "WinsockImp/WindowsClientSocket.h"
+#include <ClientSocket.h>
 
 char* localhost;
 

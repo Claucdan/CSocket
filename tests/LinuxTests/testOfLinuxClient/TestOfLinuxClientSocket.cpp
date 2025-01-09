@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <LinuxImp/LinuxClientSocket.h>
+#include <ClientSocket.h>
 #include <LinuxImp/LinuxServerSocket.h>
 #include <FindLocalIp.h>
 
