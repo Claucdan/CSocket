@@ -5,6 +5,7 @@ add_subdirectory(ServerSocket)
 add_library(
         CSocket STATIC
         CSocket.h
+        SocketDefinitionTypes.h
 )
 target_link_libraries(
         CSocket
