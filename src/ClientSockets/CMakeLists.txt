@@ -16,8 +16,8 @@ else ()
             ClientSocket STATIC
             ClientSocket.h
             IClientSocket.h
-            WinsockImp/WindowsClientSocket.h
-            WinsockImp/WindowsClientSocket.cpp
+            LinuxImp/LinuxClientSocket.h
+            LinuxImp/LinuxClientSocket.cpp
     )
     target_include_directories(
             ClientSocket PUBLIC
