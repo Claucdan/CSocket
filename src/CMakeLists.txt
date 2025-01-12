@@ -1,3 +1,22 @@
+add_subdirectory(ClientSockets)
+add_subdirectory(ServerSocket)
+
+
+add_library(
+        CSocket STATIC
+        CSocket.h
+)
+target_link_libraries(
+        CSocket
+        ClientSocket
+        ServerSocket
+)
+target_include_directories(
+        CSocket PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+
+#[===[
 if(WIN32)
     add_library(
             CSocket STATIC
@@ -33,3 +52,4 @@ if(UNIX)
             "${CMAKE_CURRENT_SOURCE_DIR}"
     )
 endif()
+]===]
