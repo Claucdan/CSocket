@@ -3,6 +3,7 @@
 
 int LinuxClientSocket::Configuration(int protocol) {
     _socket = socket(AF_INET, SOCK_STREAM, protocol);
+    _protocol = protocol;
     if (_socket == INVALID_SOCKET) {
         Close();
         return INVALID_SOCKET;
@@ -23,8 +24,17 @@ int LinuxClientSocket::Connect(const int port, const char *address) {
 }
 
 int LinuxClientSocket::Send(const void *data, const int size) {
-    if (send(_socket, (char*)data, size, 0 ) == SOCKET_ERROR)
-        return SOCKET_ERROR;
+    switch(_protocol){
+        case IPPROTO_UDP:
+            sendto(_socket, (char*)data, size, 0, (const sockaddr*)&_sockAddr, sizeof(_sockAddr));
+            break;
+        case IPPROTO_TCP:
+            if (send(_socket, (char*)data, size, 0 ) == SOCKET_ERROR)
+                return SOCKET_ERROR;
+            break;
+        default:
+            return 0;
+    }
     return 0;
 }
 
