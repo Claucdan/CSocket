@@ -6,7 +6,18 @@ int WindowsClientSocket::Configuration(int protocol) {
         return INVALID_SOCKET;
     }
 
-    _socket = ::socket(AF_INET,SOCK_STREAM, protocol);
+    _protocol = protocol;
+    switch (protocol) {
+        case IPPROTO_TCP:
+            _socket = socket(AF_INET, SOCK_STREAM, protocol);
+            break;
+        case IPPROTO_UDP:
+            _socket = socket(AF_INET, SOCK_DGRAM, protocol);
+            break;
+        default:
+            return INVALID_SOCKET;
+    };
+
     if (_socket == INVALID_SOCKET){
         Close();
         return INVALID_SOCKET;
@@ -27,13 +38,13 @@ int WindowsClientSocket::Connect(const int port, const char *address) {
 }
 
 int WindowsClientSocket::Send(const void *data, const int size) {
-    if (::send(_socket, (char*)data, size, 0 ) == SOCKET_ERROR)
+    if (send(_socket, (char*)data, size, 0 ) == SOCKET_ERROR)
         return SOCKET_ERROR;
     return 0;
 }
 
 int WindowsClientSocket::Receive(const void *data, const int size) {
-    if (::recv(_socket, (char*)data, size, 0) == SOCKET_ERROR)
+    if (recv(_socket, (char*)data, size, 0) == SOCKET_ERROR)
         return SOCKET_ERROR;
     return 0;
 }
@@ -42,7 +53,8 @@ void WindowsClientSocket::Close() {
     ::closesocket(_socket);
 }
 
-int WindowsClientSocket::Configuration(SOCKET socket) {
+int WindowsClientSocket::Configuration(SOCKET socket, int protocol) {
+    _protocol = protocol;
     _socket = socket;
     return 0;
 }

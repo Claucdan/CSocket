@@ -9,7 +9,7 @@ class WindowsClientSocket : public IClientSocket{
 private:
     SOCKET _socket;
     SOCKADDR_IN _addrIn;
-
+    int _protocol;
 
 public:
     int Configuration(int protocol) override;
@@ -19,7 +19,7 @@ public:
     void Close() override;
 
 public:
-    int Configuration(SOCKET socket);
+    int Configuration(SOCKET socket, int protocol);
 };
 
 

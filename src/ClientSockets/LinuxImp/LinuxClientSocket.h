@@ -10,6 +10,7 @@ class LinuxClientSocket : public IClientSocket{
 private:
     int _socket;
     sockaddr_in _sockAddr;
+    int _protocol;
 
 public:
     int Configuration(int protocol) override;
@@ -19,7 +20,7 @@ public:
     void Close() override;
 
 public:
-    int lConfiguration(int socket);
+    int Configuration(int socket, int protocol);
 };
 
 

@@ -2,7 +2,17 @@
 
 
 int LinuxClientSocket::Configuration(int protocol) {
-    _socket = socket(AF_INET, SOCK_STREAM, protocol);
+    _protocol = protocol;
+    switch (protocol) {
+        case IPPROTO_TCP:
+            _socket = socket(AF_INET, SOCK_STREAM, protocol);
+            break;
+        case IPPROTO_UDP:
+            _socket = socket(AF_INET, SOCK_DGRAM, protocol);
+            break;
+        default:
+            return INVALID_SOCKET;
+    }
     if (_socket == INVALID_SOCKET) {
         Close();
         return INVALID_SOCKET;
@@ -38,7 +48,8 @@ void LinuxClientSocket::Close() {
     close(_socket);
 }
 
-int LinuxClientSocket::lConfiguration(int socket) {
+int LinuxClientSocket::Configuration(int socket, int protocol) {
+    _protocol = protocol;
     _socket = socket;
     return 0;
 }

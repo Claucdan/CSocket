@@ -6,7 +6,17 @@ int WindowsServerSocket::Configuration(int protocol) {
     if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)
         return INVALID_SOCKET;
 
-    _socket = ::socket(AF_INET, SOCK_STREAM, protocol);
+    _protocol = protocol;
+    switch (protocol) {
+        case IPPROTO_TCP:
+            _socket = socket(AF_INET, SOCK_STREAM, protocol);
+            break;
+        case IPPROTO_UDP:
+            _socket = socket(AF_INET, SOCK_DGRAM, protocol);
+            break;
+        default:
+            return INVALID_SOCKET;
+    }
     if (_socket == INVALID_SOCKET) {
         Close();
         return INVALID_SOCKET;
@@ -41,7 +51,7 @@ IClientSocket *WindowsServerSocket::Accept() {
         return nullptr;
 
     WindowsClientSocket* clientSocket = new WindowsClientSocket;
-    clientSocket->Configuration(client);
+    clientSocket->Configuration(client, _protocol);
     return clientSocket;
 }
 

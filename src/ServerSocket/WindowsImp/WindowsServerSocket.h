@@ -8,6 +8,7 @@ class WindowsServerSocket : public IServerSocket{
 private:
     SOCKET _socket;
     SOCKADDR_IN _addrIn;
+    int _protocol;
 public:
     int Configuration(int protocol) override;
     int Bind(const int port, const char* address) override;

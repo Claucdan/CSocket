@@ -2,7 +2,17 @@
 #include "../../ClientSockets/LinuxImp/LinuxClientSocket.h"
 
 int LinuxServerSocket::Configuration(int protocol) {
-    _socket = socket(AF_INET, SOCK_STREAM, protocol);
+    _protocol = protocol;
+    switch (protocol) {
+        case IPPROTO_TCP:
+            _socket = socket(AF_INET, SOCK_STREAM, protocol);
+            break;
+        case IPPROTO_UDP:
+            _socket = socket(AF_INET, SOCK_DGRAM, protocol);
+            break;
+        default:
+            return INVALID_SOCKET;
+    }
     if (_socket == INVALID_SOCKET){
         Close();
         return INVALID_SOCKET;
@@ -37,7 +47,7 @@ IClientSocket *LinuxServerSocket::Accept() {
         return nullptr;
 
     LinuxClientSocket* clientSocket = new LinuxClientSocket();
-    clientSocket->lConfiguration(client);
+    clientSocket->Configuration(client, _protocol);
     return clientSocket;
 }
 

@@ -11,6 +11,7 @@ class LinuxServerSocket : public IServerSocket{
 private:
     int _socket;
     sockaddr_in _sockAddr;
+    int _protocol;
 public:
     int Configuration(int protocol) override;
     int Bind(const int port, const char* address) override;
