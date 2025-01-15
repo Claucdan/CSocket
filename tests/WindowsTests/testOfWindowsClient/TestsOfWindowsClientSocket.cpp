@@ -9,13 +9,13 @@ TEST(TestsOfWindowsClienSocket, Creation){
     clientSocket->Close();
 }
 
-TEST(TestsOfWindowsClienSocket, Configure){
+TEST(TestsOfWindowsClienSocket, ConfigureTCP){
     IClientSocket* clientSocket = new WindowsClientSocket();
     EXPECT_NO_THROW(clientSocket->Configuration(IPPROTO_TCP));
     clientSocket->Close();
 }
 
-TEST(TestsOfWindowsClienSocket, Connect){
+TEST(TestsOfWindowsClienSocket, ConnectTCP){
     IClientSocket* clientSocket = new WindowsClientSocket();
     IServerSocket* serverSocket = new WindowsServerSocket();
 
@@ -28,7 +28,7 @@ TEST(TestsOfWindowsClienSocket, Connect){
     clientSocket->Close();
     serverSocket->Close();
 }
-TEST(TestsOfWindowsClienSocket, Send){
+TEST(TestsOfWindowsClienSocket, SendTCP){
     IClientSocket* clientSocket = new WindowsClientSocket();
     IServerSocket* serverSocket = new WindowsServerSocket();
     char data = 7,
@@ -45,7 +45,7 @@ TEST(TestsOfWindowsClienSocket, Send){
     serverSocket->Close();
 }
 
-TEST(TestsOfWindowsClienSocket, SendAndCheckData){
+TEST(TestsOfWindowsClienSocket, SendAndCheckDataTCP){
     IClientSocket* clientSocket = new WindowsClientSocket();
     IServerSocket* serverSocket = new WindowsServerSocket();
     char data = 7,
@@ -64,6 +64,60 @@ TEST(TestsOfWindowsClienSocket, SendAndCheckData){
     serverSocket->Close();
 }
 
+TEST(TestsOfWindowsClienSocket, ConfigureUDP){
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    EXPECT_NO_THROW(clientSocket->Configuration(IPPROTO_UDP));
+    clientSocket->Close();
+}
+
+TEST(TestsOfWindowsClienSocket, ConnectUDP){
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    IServerSocket* serverSocket = new WindowsServerSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(489, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+
+    EXPECT_EQ(clientSocket->Connect(489, localhost), 0);
+    clientSocket->Close();
+    serverSocket->Close();
+}
+TEST(TestsOfWindowsClienSocket, SendUDP){
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    char data = 7,
+            fakeData =10;
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(489, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(489, localhost);
+    clientSocket->Send(&data, sizeof(data));
+    EXPECT_NO_THROW(serverSocket->Accept()->Receive(&fakeData, sizeof(char)));
+    clientSocket->Close();
+    serverSocket->Close();
+}
+
+TEST(TestsOfWindowsClienSocket, SendAndCheckDataUDP){
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    char data = 7,
+            fakeData =10;
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(489, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(489, localhost);
+    clientSocket->Send(&data, sizeof(data));
+    serverSocket->Accept()->Receive(&fakeData, sizeof(char));
+
+    EXPECT_EQ(data, fakeData);
+    clientSocket->Close();
+    serverSocket->Close();
+}
 
 
 
