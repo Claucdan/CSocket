@@ -8,13 +8,13 @@ TEST(TestsOfWindowsServerSocket, Creation){
     EXPECT_NO_THROW(serverSocket = new WindowsServerSocket());
 }
 
-TEST(TestsOfServerWindowsSocket, Configure){
+TEST(TestsOfServerWindowsSocket, ConfigureTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
     EXPECT_NO_THROW(serverSocket->Configuration(IPPROTO_TCP));
     serverSocket->Close();
 }
 
-TEST(TestsOfServerWindowsSocket, Bind){
+TEST(TestsOfServerWindowsSocket, BindTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
 
     serverSocket->Configuration(IPPROTO_TCP);
@@ -23,7 +23,7 @@ TEST(TestsOfServerWindowsSocket, Bind){
     serverSocket->Close();
 }
 
-TEST(TestsOfServerWindowsSocket, Listen){
+TEST(TestsOfServerWindowsSocket, ListenTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
 
     serverSocket->Configuration(IPPROTO_TCP);
@@ -33,7 +33,7 @@ TEST(TestsOfServerWindowsSocket, Listen){
     serverSocket->Close();
 }
 
-TEST(TestsOfServerWindowsSocket, Accept){
+TEST(TestsOfServerWindowsSocket, AcceptTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
     IClientSocket* clientSocket = new WindowsClientSocket();
 
@@ -49,7 +49,7 @@ TEST(TestsOfServerWindowsSocket, Accept){
     serverSocket->Close();
 }
 
-TEST(TestOfServerWindowsSocket, Recive){
+TEST(TestOfServerWindowsSocket, ReciveTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
     IClientSocket* clientSocket = new WindowsClientSocket();
     char data = 0,
@@ -68,7 +68,7 @@ TEST(TestOfServerWindowsSocket, Recive){
     serverSocket->Close();
 }
 
-TEST(TestOfServerWindowsSocket, ReciveAndCheckData){
+TEST(TestOfServerWindowsSocket, ReciveAndCheckDataTCP){
     IServerSocket* serverSocket = new WindowsServerSocket();
     IClientSocket* clientSocket = new WindowsClientSocket();
     char data = 0,
@@ -88,7 +88,85 @@ TEST(TestOfServerWindowsSocket, ReciveAndCheckData){
     serverSocket->Close();
 }
 
+TEST(TestsOfServerWindowsSocket, ConfigureUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    EXPECT_NO_THROW(serverSocket->Configuration(IPPROTO_UDP));
+    serverSocket->Close();
+}
 
+TEST(TestsOfServerWindowsSocket, BindUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+
+    EXPECT_EQ(serverSocket->Bind(35098,localhost), 0);
+    serverSocket->Close();
+}
+
+TEST(TestsOfServerWindowsSocket, ListenUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+
+    EXPECT_EQ(serverSocket->Listen(1), 0);
+    serverSocket->Close();
+}
+
+TEST(TestsOfServerWindowsSocket, AcceptUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    IClientSocket* clientSocket = new WindowsClientSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(12498, localhost);
+
+
+    EXPECT_NO_THROW(serverSocket->Accept());
+    clientSocket->Close();
+    serverSocket->Close();
+}
+
+TEST(TestOfServerWindowsSocket, ReciveUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    char data = 0,
+            reciveData = 1;
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(12498, localhost);
+    IClientSocket* acceptSocket = serverSocket->Accept();
+    clientSocket->Send(&data, sizeof(char));
+
+    EXPECT_NO_THROW(acceptSocket->Receive(&reciveData, sizeof(char)));
+    clientSocket->Close();
+    serverSocket->Close();
+}
+
+TEST(TestOfServerWindowsSocket, ReciveAndCheckDataUDP){
+    IServerSocket* serverSocket = new WindowsServerSocket();
+    IClientSocket* clientSocket = new WindowsClientSocket();
+    char data = 0,
+            reciveData = 1;
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(12498, localhost);
+    IClientSocket* acceptSocket = serverSocket->Accept();
+    clientSocket->Send(&data, sizeof(char));
+    acceptSocket->Receive(&reciveData, sizeof(char));
+
+    EXPECT_EQ(data, reciveData);
+    clientSocket->Close();
+    serverSocket->Close();
+}
 
 
 
