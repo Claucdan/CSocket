@@ -11,13 +11,13 @@ TEST(TestsOfLinuxServerSocket, Creation){
     serverSocket->Close();
 }
 
-TEST(TestsOfServerLinuxSocket, Configure){
+TEST(TestsOfServerLinuxSocket, ConfigureTCP){
     IServerSocket* serverSocket = new LinuxServerSocket();
     EXPECT_NO_THROW(serverSocket->Configuration(IPPROTO_TCP));
     serverSocket->Close();
 }
 
-TEST(TestsOfServerLinuxSocket, Bind){
+TEST(TestsOfServerLinuxSocket, BindTCP){
     IServerSocket* serverSocket = new LinuxServerSocket();
 
     serverSocket->Configuration(IPPROTO_TCP);
@@ -26,7 +26,7 @@ TEST(TestsOfServerLinuxSocket, Bind){
     serverSocket->Close();
 }
 
-TEST(TestsOfServerLinuxSocket, Listen){
+TEST(TestsOfServerLinuxSocket, ListenTCP){
     IServerSocket* serverSocket = new LinuxServerSocket();
 
     serverSocket->Configuration(IPPROTO_TCP);
@@ -36,7 +36,7 @@ TEST(TestsOfServerLinuxSocket, Listen){
     serverSocket->Close();
 }
 
-TEST(TestsOfServerLinuxSocket, Accept){
+TEST(TestsOfServerLinuxSocket, AcceptTCP){
     IServerSocket* serverSocket = new LinuxServerSocket();
     IClientSocket* clientSocket = new LinuxClientSocket();
 
@@ -52,7 +52,7 @@ TEST(TestsOfServerLinuxSocket, Accept){
     serverSocket->Close();
 }
 
-TEST(TestOfServerLinuxSocket, Recive){
+TEST(TestOfServerLinuxSocket, ReciveTCP){
     IServerSocket* serverSocket = new LinuxServerSocket();
     IClientSocket* clientSocket = new LinuxClientSocket();
     char data = 0,
@@ -62,6 +62,67 @@ TEST(TestOfServerLinuxSocket, Recive){
     serverSocket->Bind(12498, localhost);
     serverSocket->Listen(1);
     clientSocket->Configuration(IPPROTO_TCP);
+    clientSocket->Connect(12498, localhost);
+    IClientSocket* acceptSocket = serverSocket->Accept();
+    clientSocket->Send(&data, sizeof(char));
+
+    EXPECT_NO_THROW(acceptSocket->Receive(&reciveData, sizeof(char)));
+    clientSocket->Close();
+    serverSocket->Close();
+}
+
+
+TEST(TestsOfServerLinuxSocket, ConfigureUDP){
+    IServerSocket* serverSocket = new LinuxServerSocket();
+    EXPECT_NO_THROW(serverSocket->Configuration(IPPROTO_UDP));
+    serverSocket->Close();
+}
+
+TEST(TestsOfServerLinuxSocket, BindUDP){
+    IServerSocket* serverSocket = new LinuxServerSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+
+    EXPECT_EQ(serverSocket->Bind(35098,localhost), 0);
+    serverSocket->Close();
+}
+
+TEST(TestsOfServerLinuxSocket, ListenUDP){
+    IServerSocket* serverSocket = new LinuxServerSocket();
+
+    serverSocket->Configuration(IPPROTO_TCP);
+    serverSocket->Bind(12498, localhost);
+
+    EXPECT_EQ(serverSocket->Listen(1), 0);
+    serverSocket->Close();
+}
+
+TEST(TestsOfServerLinuxSocket, AcceptUDP){
+    IServerSocket* serverSocket = new LinuxServerSocket();
+    IClientSocket* clientSocket = new LinuxClientSocket();
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
+    clientSocket->Connect(12498, localhost);
+
+
+    EXPECT_NO_THROW(serverSocket->Accept());
+    clientSocket->Close();
+    serverSocket->Close();
+}
+
+TEST(TestOfServerLinuxSocket, ReciveUDP){
+    IServerSocket* serverSocket = new LinuxServerSocket();
+    IClientSocket* clientSocket = new LinuxClientSocket();
+    char data = 0,
+            reciveData = 1;
+
+    serverSocket->Configuration(IPPROTO_UDP);
+    serverSocket->Bind(12498, localhost);
+    serverSocket->Listen(1);
+    clientSocket->Configuration(IPPROTO_UDP);
     clientSocket->Connect(12498, localhost);
     IClientSocket* acceptSocket = serverSocket->Accept();
     clientSocket->Send(&data, sizeof(char));
